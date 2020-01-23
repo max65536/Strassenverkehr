@@ -18,13 +18,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -68,6 +68,7 @@
     <ClCompile Include="Fahren.cpp" />
     <ClCompile Include="Fahrrad.cpp" />
     <ClCompile Include="Fahrzeug.cpp" />
+    <ClCompile Include="Kreuzung.cpp" />
     <ClCompile Include="Losfahren.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parken.cpp" />
@@ -83,6 +84,7 @@
     <ClInclude Include="Fahren.h" />
     <ClInclude Include="Fahrrad.h" />
     <ClInclude Include="Fahrzeug.h" />
+    <ClInclude Include="Kreuzung.h" />
     <ClInclude Include="Losfahren.h" />
     <ClInclude Include="Parken.h" />
     <ClInclude Include="PKW.h" />

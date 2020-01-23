@@ -38,6 +38,9 @@ public:
 
 	~Weg();
 
+	double getVirtuelleSchranke();
+	void setVirtuelleSchranke(double dVirtuelleSchranke);
+
 private:
 	double p_dLanenge;
 	Tempolimit p_eTempolimit;
@@ -47,6 +50,7 @@ private:
 	vertagt::VListe<unique_ptr<Fahrzeug>> p_pFahrzeuge;
 
 	bool p_bUeberholverbot;
+	double p_dVirtuelleSchranke=10000000000;
 };
 
 ostream& operator<<(ostream& oStream, Weg& weg);

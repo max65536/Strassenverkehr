@@ -258,15 +258,15 @@ void vAufgabe_6()
 	unique_ptr<Weg> weg1 = make_unique<Weg>("Weg1", 500, Weg::Autobahn);
 	unique_ptr<Weg> weg2 = make_unique<Weg>("Weg2", 500, Weg::Innerorts);
 
-	unique_ptr<Fahrzeug> f1 = make_unique<PKW>("F1", 500, 3.6, 70);
-	unique_ptr<Fahrzeug> f2 = make_unique<PKW>("F2", 290, 5, 60);
-	unique_ptr<Fahrzeug> f3 = make_unique<PKW>("F3", 250, 7, 10);
+	unique_ptr<Fahrzeug> f1 = make_unique<PKW>("F1", 90, 7, 10);
+	unique_ptr<Fahrzeug> f2 = make_unique<PKW>("F2", 100, 5, 60);
+	unique_ptr<Fahrzeug> f3 = make_unique<PKW>("F3", 200, 7, 100);
 	unique_ptr<Fahrzeug> f4 = make_unique<Fahrrad>("Fahrrad1", 30);
 	unique_ptr<Fahrzeug> f5 = make_unique<Fahrrad>("Fahrrad2", 20);
 
-	weg1->vAnnahme(move(f1),2.5);
-	weg1->vAnnahme(move(f2), 0.3);
-	//weg1->vAnnahme(move(f3));
+	weg1->vAnnahme(move(f1));
+	weg1->vAnnahme(move(f2));
+	weg1->vAnnahme(move(f3),0.9);
 	//weg1->vAnnahme(move(f4));
 	//weg1->vAnnahme(move(f5),2);
 
@@ -289,14 +289,19 @@ void vAufgabe_6()
 	const char* sWegname2 = s2.c_str();
 	bZeichneStrasse(weg1->getName(), sWegname2, weg1->getLaenge(), 2, koordinaten);
 
-	for (dGlobaleZeit =0; dGlobaleZeit < 5; dGlobaleZeit += 0.25){
+	for (dGlobaleZeit =0; dGlobaleZeit < 3; dGlobaleZeit += 0.25){
 		
 		vSetzeZeit(dGlobaleZeit);
 
 		cout << "GlobaleZeit:" << dGlobaleZeit << endl;
+		weg1->setVirtuelleSchranke(10000000000);
 		weg1->vSimulieren();
+		cout << "weg1 VirtuelleSchranke:" << weg1->getVirtuelleSchranke() << endl;
 		weg1->vFahrzeuglistAusgeben();
+
+		weg2->setVirtuelleSchranke(10000000000);
 		weg2->vSimulieren();
+		cout << "weg2 VirtuelleSchranke:" << weg2->getVirtuelleSchranke() << endl;
 		weg2->vFahrzeuglistAusgeben();
 		cout << endl;
 		

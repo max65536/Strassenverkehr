@@ -2,6 +2,7 @@
 #include "Fahrzeug.h"
 #include "Weg.h"
 #include "Streckenende.h"
+#include<algorithm>
 
 Fahren::Fahren()
 {
@@ -12,22 +13,22 @@ Verhalten(weg)
 
 double Fahren::dStrecke(Fahrzeug& fahrzeug, double dZeit)
 {
-	double dStrecke1 = fahrzeug.dGeschwindigkeit()*dZeit;
-	double dStrecke2 = p_pWeg->getLaenge() - fahrzeug.getAbschnittStrecke();
-	if (dStrecke2<0.01)
+	if (dZeit == 0) return 0;
+	double dVirtuelleStrecke = p_pWeg->getVirtuelleSchranke();
+	double dZeitLaenge = fahrzeug.dGeschwindigkeit()*dZeit;
+	double dAbschnittStrecke = fahrzeug.getAbschnittStrecke();
+	double dRestLaenge = p_pWeg->getLaenge() - dAbschnittStrecke;
+	double dVirtuelleRestLaenge= dVirtuelleStrecke - dAbschnittStrecke;
+
+	if (dRestLaenge <0.01)
 	{
 		throw new Streckenende(fahrzeug, *p_pWeg);
+		return 0;
 	}
+	double dFahrbarLaenge = min(min(dRestLaenge,dVirtuelleRestLaenge),dZeitLaenge);
+	p_pWeg->setVirtuelleSchranke(dFahrbarLaenge+ dAbschnittStrecke);
+	return dFahrbarLaenge;
 	
-	if (dStrecke1 > dStrecke2) 
-	{
-		cout << "Wegende" << endl;
-		return dStrecke2;
-	}
-	else
-	{
-		return dStrecke1;
-	}
 }
 
 Fahren::~Fahren()

@@ -59,7 +59,7 @@ unique_ptr<Fahrzeug> Weg::pAbgabe(Fahrzeug& pFahrzeug){
 			return tmp;
 		}
 	}
-//	return nullptr;
+	return nullptr;
 }
 
 void Weg::vKopf()
@@ -122,6 +122,19 @@ ostream& operator<<(ostream& os, Weg& weg)
 	return os;
 }
 
+double Weg::getVirtuelleSchranke() 
+{
+	if (p_bUeberholverbot) 
+	{
+		return p_dVirtuelleSchranke;
+	}
+	return 10000000000;
+}
+
+void Weg::setVirtuelleSchranke(double dVirtuelleSchranke)
+{
+	p_dVirtuelleSchranke = dVirtuelleSchranke;
+}
 
 Weg::~Weg()
 {
