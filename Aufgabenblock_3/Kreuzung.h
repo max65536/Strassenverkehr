@@ -9,18 +9,20 @@ public:
 	Kreuzung()=default;
 	Kreuzung(string sName, double dTankstellenKapazitaet = 0);
 
-	void vVerbinde(string sNameHinweg, string sNameRueckweg, double dWegLaenge, Kreuzung* kreuzung,
+	void vVerbinde(string sNameHinweg, string sNameRueckweg, double dWegLaenge, 
+		weak_ptr<Kreuzung> pStartKreuzung, const weak_ptr<Kreuzung> pZielKreuzung,
 		Weg::Tempolimit geschwBegrenz = Weg::Tempolimit::Autobahn, bool bUeberholVerbot = true);
 	void vTanken(Fahrzeug&);
 	void vAnnahme(unique_ptr<Fahrzeug>,double dZeit);
 	void vSimulieren();
-	Weg& ptZufaelligerWeg(Weg& pWeg);
+	Weg& pZufaelligerWeg(Weg& pWeg);
+	double getTankstellen() { return p_dTankstelle; }
 
 	virtual ~Kreuzung();
 
 private:
 	double p_dTankstelle;
-	list<weak_ptr<Weg>> p_pWege;
+	list<shared_ptr<Weg>> p_pWege;
 
 
 };

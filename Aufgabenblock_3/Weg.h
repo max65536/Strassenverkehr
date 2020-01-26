@@ -8,6 +8,7 @@
 using namespace std;
 
 class Fahrzeug;
+class Kreuzung;
 
 typedef vertagt::VListe<unique_ptr<Fahrzeug>>::iterator vIterator;
 
@@ -34,12 +35,17 @@ public:
 
 	Weg();
 	Weg(string name, double laenge, Tempolimit Geschwindigkeitslimit = Autobahn, bool bUeberholverbot = true);
+	Weg(string name, double laenge, weak_ptr<Kreuzung> pKreuzung ,Tempolimit Geschwindigkeitslimit = Autobahn, bool bUeberholverbot = true);
 	double getLaenge()const { return p_dLanenge; };
 
 	~Weg();
 
 	double getVirtuelleSchranke();
 	void setVirtuelleSchranke(double dVirtuelleSchranke);
+	void setRueckweg(weak_ptr<Weg> pRueckweg);
+	Weg& getRueckweg();
+	Kreuzung& getKreuzung();
+
 
 private:
 	double p_dLanenge;
@@ -51,6 +57,8 @@ private:
 
 	bool p_bUeberholverbot;
 	double p_dVirtuelleSchranke=10000000000;
+	weak_ptr<Weg> p_pRueckWeg;
+	const weak_ptr<Kreuzung> p_pKreuzung;
 };
 
 ostream& operator<<(ostream& oStream, Weg& weg);

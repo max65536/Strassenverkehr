@@ -1,6 +1,7 @@
 #include "Streckenende.h"
 #include "Fahrzeug.h"
 #include "Weg.h"
+#include "Kreuzung.h"
 
 Streckenende::Streckenende(Fahrzeug& fahrzeug, Weg& weg):
 Fahrausnahme(fahrzeug,weg)
@@ -18,6 +19,17 @@ void Streckenende::vBearbeiten()
 			fahrzeuglist->erase(it);
 		}
 	}
+	fahrzeuglist->vAktualisieren();
+	Kreuzung& kreuzung = p_pWeg.getKreuzung();
+	Weg& neuweg = kreuzung.pZufaelligerWeg(p_pWeg);
+	kreuzung.vTanken(p_pFahrzeug);
+	unique_ptr<Fahrzeug> pFahrzeug(&p_pFahrzeug);
+	neuweg.vAnnahme(move(pFahrzeug));
+
+	cout << setw(10) << "ZEIT" << ":" << dGlobaleZeit << endl
+		<< setw(10) << "KREUZUNG" << ":" << kreuzung.getName() << " " << kreuzung.getTankstellen() << endl
+		<< setw(10) << "WECHSEL" << ":" << p_pWeg.getName() << " -> " << neuweg.getName() << endl
+		<< setw(10) << "FAHRZEUG" << ":" << pFahrzeug->getName() << endl;
 }
 
 Streckenende::~Streckenende()

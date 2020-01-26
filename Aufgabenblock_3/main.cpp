@@ -9,6 +9,7 @@
 #include "SimuClient.h"
 #include "vertagt_liste.h"
 #include <random>
+#include "Kreuzung.h"
 
 using namespace std;
 
@@ -283,8 +284,8 @@ void vAufgabe_6()
 	Weg::vKopf();
 	cout << *weg1 << endl<<*weg2<< endl;
 
-	bInitialisiereGrafik(800, 500); 
-	int koordinaten[4] = { 700, 250, 100, 250 }; 
+	bInitialisiereGrafik(1000, 500); 
+	int koordinaten[4] = { 700, 300, 100, 300 }; 
 	string s2 = weg2->getName();
 	const char* sWegname2 = s2.c_str();
 	bZeichneStrasse(weg1->getName(), sWegname2, weg1->getLaenge(), 2, koordinaten);
@@ -307,6 +308,71 @@ void vAufgabe_6()
 		
 		vSleep(800);
 	}
+	vBeendeGrafik();
+}
+
+void vAufgabe_7(){
+	cout << "Aufgabe 7: " << endl << endl;
+	shared_ptr<Kreuzung> kr1 = make_shared<Kreuzung>("kr1", 10001);
+	shared_ptr<Kreuzung> kr2 = make_shared<Kreuzung>("kr2", 10001);
+	shared_ptr<Kreuzung> kr3 = make_shared<Kreuzung>("kr3");
+	shared_ptr<Kreuzung> kr4 = make_shared<Kreuzung>("kr4");
+
+	unique_ptr<Fahrzeug> f1 = make_unique<PKW>("F1", 90, 7, 10);
+	unique_ptr<Fahrzeug> f2 = make_unique<PKW>("F2", 100, 5, 60);
+	unique_ptr<Fahrzeug> f3 = make_unique<PKW>("F3", 200, 7, 100);
+	unique_ptr<Fahrzeug> f4 = make_unique<Fahrrad>("Fahrrad1", 30);
+	unique_ptr<Fahrzeug> f5 = make_unique<Fahrrad>("Fahrrad2", 20);
+
+	bInitialisiereGrafik(1000, 1000);
+
+	bZeichneKreuzung(680,40);
+	bZeichneKreuzung(680, 300);
+	bZeichneKreuzung(680, 570);
+	bZeichneKreuzung(320, 300);
+
+	int strasse1[] = { 680, 40, 680, 300 };
+	int strasse2[] = { 680, 300, 850, 300, 970, 390, 970, 500, 850, 570, 680, 570 };
+	int strasse3[] = { 680, 300, 680, 570 };
+	int strasse4[] = { 680, 300, 320, 300 };
+	int strasse5[] = { 680, 570, 500, 570, 350, 510, 320, 420, 320, 300 };
+	int strasse6[] = { 320, 300, 170, 300, 70, 250, 80, 90, 200, 60, 320, 150, 320, 300 };
+
+	bZeichneStrasse("W12", "W21", 40, 2, strasse1);
+	bZeichneStrasse("W23a", "W32a", 115, 6, strasse2);
+	bZeichneStrasse("W23b", "W32b", 40, 2, strasse3);
+	bZeichneStrasse("W24", "W42", 55, 2, strasse4);
+	bZeichneStrasse("W34", "W43", 85, 5, strasse5);
+	bZeichneStrasse("W44a", "W44b", 130, 7, strasse6);
+
+	kr1->vVerbinde("W12", "W21", 40, kr1, kr2, Weg::Tempolimit::Innerorts, true);
+	kr2->vVerbinde("W23a", "W32a", 115, kr2, kr3, Weg::Tempolimit::Autobahn, false);
+	kr2->vVerbinde("W23b", "W32b", 40, kr2, kr3, Weg::Tempolimit::Innerorts, true);
+	kr2->vVerbinde("W24", "W42", 55, kr2, kr4, Weg::Tempolimit::Innerorts, true);
+	kr3->vVerbinde("W34", "W43", 85, kr3, kr4, Weg::Tempolimit::Autobahn, false);
+	kr4->vVerbinde("W44a", "W44b", 130, kr4, kr4, Weg::Tempolimit::Landstrasse, false);
+
+
+	//int koordinaten[4] = { 700, 300, 100, 300 };
+	//string s2 = weg2->getName();
+	//const char* sWegname2 = s2.c_str();
+	//bZeichneStrasse(weg1->getName(), sWegname2, weg1->getLaenge(), 2, koordinaten);
+
+	kr1->vAnnahme(move(f1), 1.5);
+	kr2->vAnnahme(move(f2), 3.0);
+	kr1->vAnnahme(move(f3), 0.0);
+
+	for (dGlobaleZeit = 0.1; dGlobaleZeit <= 4; dGlobaleZeit += 0.1)
+	{
+		vSetzeZeit(dGlobaleZeit);
+		kr1->vSimulieren();
+		kr2->vSimulieren();
+		kr3->vSimulieren();
+		kr4->vSimulieren();
+
+		vSleep(500);
+	}
+
 	vBeendeGrafik();
 }
 
@@ -350,8 +416,9 @@ int main(){
 //	vAufgabe_3();
 //	vAufgabe_4();
 	//vAufgabe_5();
-	vAufgabe_6();
+	//vAufgabe_6();
 	//vAufgabe_6a();
+	vAufgabe_7();
 //	test();
 	return 0;
 }

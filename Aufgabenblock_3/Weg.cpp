@@ -6,11 +6,19 @@ Weg::Weg()
 {
 }
 
-Weg::Weg(string name, double laenge, Tempolimit Geschwindigkeitslimit ,bool bUeberholverbot) :
+Weg::Weg(string name, double laenge, Tempolimit Geschwindigkeitslimit, bool bUeberholverbot) :
 	Simulationsobject(name),
 	p_dLanenge(laenge),
 	p_eTempolimit(Geschwindigkeitslimit),
 	p_bUeberholverbot(bUeberholverbot)
+{}
+
+Weg::Weg(string name, double laenge , weak_ptr<Kreuzung> pKreuzung, Tempolimit Geschwindigkeitslimit ,bool bUeberholverbot) :
+	Simulationsobject(name),
+	p_dLanenge(laenge),
+	p_eTempolimit(Geschwindigkeitslimit),
+	p_bUeberholverbot(bUeberholverbot),
+	p_pKreuzung(pKreuzung)
 {}
 
 double Weg::getTempolimit()
@@ -134,6 +142,21 @@ double Weg::getVirtuelleSchranke()
 void Weg::setVirtuelleSchranke(double dVirtuelleSchranke)
 {
 	p_dVirtuelleSchranke = dVirtuelleSchranke;
+}
+
+void Weg::setRueckweg(weak_ptr<Weg> pRueckweg) 
+{
+	p_pRueckWeg = pRueckweg;
+}
+
+Weg& Weg::getRueckweg()
+{
+	return *p_pRueckWeg.lock();
+}
+
+Kreuzung& Weg::getKreuzung()
+{
+	return *p_pKreuzung.lock();
 }
 
 Weg::~Weg()
