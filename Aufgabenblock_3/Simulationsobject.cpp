@@ -1,7 +1,7 @@
 #include "Simulationsobject.h"
 
 int Simulationsobject::p_iMaxID = 0;
-Simulationsobject::Simulationsobject()
+Simulationsobject::Simulationsobject():p_iID(++p_iMaxID),p_sName("")
 {
 }
 
@@ -29,11 +29,28 @@ ostream& Simulationsobject::vAusgeben(ostream& os)
 	return os;
 }
 
+istream& Simulationsobject::vEinlesen(istream& iStream) {
+
+	iStream >> p_sName;
+	if (p_sName == "")
+	{
+		throw runtime_error("leerer Name");
+	}
+	return iStream;
+}
+
 ostream& operator<<(ostream& oStream, Simulationsobject& simulationsobject)
 {
 	simulationsobject.vAusgeben(oStream);
 	//	os << "overload" << endl;
 	return oStream;
+}
+
+
+istream& operator>>(istream& iStream, Simulationsobject& simulationsobject)
+{
+	simulationsobject.vEinlesen(iStream);
+	return iStream;
 }
 
 Simulationsobject::~Simulationsobject()

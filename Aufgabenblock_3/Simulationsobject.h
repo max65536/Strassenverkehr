@@ -18,11 +18,15 @@ public:
 	Simulationsobject(string name);
 	virtual ~Simulationsobject();
 
+	virtual istream& vEinlesen(istream&);
+
 protected:
-	string p_sName;
+	string p_sName="";
 	const int p_iID = 0;
 	double p_dZeit = 0;
 
 };
 
 ostream& operator<<(ostream& oStream, Simulationsobject& simulationsobject);
+istream& operator>>(istream& iStream, Simulationsobject& simulationsobject);
+

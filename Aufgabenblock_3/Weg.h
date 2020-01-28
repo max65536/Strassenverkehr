@@ -36,7 +36,7 @@ public:
 	Weg();
 	Weg(string name, double laenge, Tempolimit Geschwindigkeitslimit = Autobahn, bool bUeberholverbot = true);
 	Weg(string name, double laenge, weak_ptr<Kreuzung> pKreuzung ,Tempolimit Geschwindigkeitslimit = Autobahn, bool bUeberholverbot = true);
-	double getLaenge()const { return p_dLanenge; };
+	double getLaenge() const { return p_dLanenge; };
 
 	~Weg();
 
@@ -45,7 +45,7 @@ public:
 	void setRueckweg(weak_ptr<Weg> pRueckweg);
 	Weg& getRueckweg();
 	Kreuzung& getKreuzung();
-
+	virtual istream& vEinlesen(istream&) override;
 
 private:
 	double p_dLanenge;

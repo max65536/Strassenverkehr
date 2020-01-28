@@ -10,6 +10,10 @@
 #include "vertagt_liste.h"
 #include <random>
 #include "Kreuzung.h"
+#include <fstream>
+#include "Simulationsobject.h"
+#include <string>
+#include "Simulation.h"
 
 using namespace std;
 
@@ -295,12 +299,12 @@ void vAufgabe_6()
 		vSetzeZeit(dGlobaleZeit);
 
 		cout << "GlobaleZeit:" << dGlobaleZeit << endl;
-		weg1->setVirtuelleSchranke(10000000000);
+		//weg1->setVirtuelleSchranke(10000000000);
 		weg1->vSimulieren();
 		cout << "weg1 VirtuelleSchranke:" << weg1->getVirtuelleSchranke() << endl;
 		weg1->vFahrzeuglistAusgeben();
 
-		weg2->setVirtuelleSchranke(10000000000);
+		//weg2->setVirtuelleSchranke(10000000000);
 		weg2->vSimulieren();
 		cout << "weg2 VirtuelleSchranke:" << weg2->getVirtuelleSchranke() << endl;
 		weg2->vFahrzeuglistAusgeben();
@@ -318,15 +322,15 @@ void vAufgabe_7(){
 	shared_ptr<Kreuzung> kr3 = make_shared<Kreuzung>("kr3");
 	shared_ptr<Kreuzung> kr4 = make_shared<Kreuzung>("kr4");
 
-	unique_ptr<Fahrzeug> f1 = make_unique<PKW>("F1", 90, 7, 10);
-	unique_ptr<Fahrzeug> f2 = make_unique<PKW>("F2", 100, 5, 60);
-	unique_ptr<Fahrzeug> f3 = make_unique<PKW>("F3", 200, 7, 100);
+	unique_ptr<Fahrzeug> f1 = make_unique<PKW>("F1", 45, 7, 800);
+	unique_ptr<Fahrzeug> f2 = make_unique<PKW>("F2", 100, 5, 600);
+	unique_ptr<Fahrzeug> f3 = make_unique<PKW>("F3", 200, 7, 600);
 	unique_ptr<Fahrzeug> f4 = make_unique<Fahrrad>("Fahrrad1", 30);
 	unique_ptr<Fahrzeug> f5 = make_unique<Fahrrad>("Fahrrad2", 20);
 
 	bInitialisiereGrafik(1000, 1000);
 
-	bZeichneKreuzung(680,40);
+	bZeichneKreuzung(680, 40);
 	bZeichneKreuzung(680, 300);
 	bZeichneKreuzung(680, 570);
 	bZeichneKreuzung(320, 300);
@@ -357,53 +361,118 @@ void vAufgabe_7(){
 	//string s2 = weg2->getName();
 	//const char* sWegname2 = s2.c_str();
 	//bZeichneStrasse(weg1->getName(), sWegname2, weg1->getLaenge(), 2, koordinaten);
+	Fahrzeug& sf1 = *f1;
+	Fahrzeug& sf2 = *f2;
+	Fahrzeug& sf3 = *f3;
+	Fahrzeug& sf4 = *f4;
 
-	kr1->vAnnahme(move(f1), 1.5);
-	kr2->vAnnahme(move(f2), 3.0);
-	kr1->vAnnahme(move(f3), 0.0);
+	
+	kr2->vAnnahme(move(f2),1);
+	kr1->vAnnahme(move(f3),0);
+	kr1->vAnnahme(move(f4),0);
+	kr1->vAnnahme(move(f1),0);
 
-	for (dGlobaleZeit = 0.1; dGlobaleZeit <= 4; dGlobaleZeit += 0.1)
+	for (dGlobaleZeit = 0; dGlobaleZeit <= 3; dGlobaleZeit += 0.25)
 	{
+
+		if (fabs(dGlobaleZeit- 1)<0.01)
+		{
+			cout << "wait..." << endl;
+		}
+		cout << "dZeit=" << dGlobaleZeit<< endl;
 		vSetzeZeit(dGlobaleZeit);
 		kr1->vSimulieren();
+		//kr1->getWege().front()->vFahrzeuglistAusgeben();
+
 		kr2->vSimulieren();
+		//list<shared_ptr<Weg>> tmp=kr2->getWege();
+		//list<shared_ptr<Weg>>::iterator it = tmp.begin();
+		//it++;
+		//(*it)->vFahrzeuglistAusgeben();
+
 		kr3->vSimulieren();
 		kr4->vSimulieren();
 
-		vSleep(500);
+		Fahrzeug::vKopf();
+		cout << sf1 << endl;
+		cout << sf2 << endl;
+		cout << sf3 << endl;
+		cout << sf4 << endl;
+		vSleep(200);
 	}
 
 	vBeendeGrafik();
 }
 
-void test(){
-	bInitialisiereGrafik(800, 500); 
-	int koordinaten[4] = { 700, 250, 100, 250 }; 
+void vAufgabe_8()
+{
+	cout << "Aufgabe 8: " << endl << endl;
 
-	string s1 = "wegtest";
-	const char* sWegname = s1.c_str();
+	ifstream myfile("VO.dat");
+	Fahrzeug f1;
+	PKW p1;
+	Fahrrad f2;
+	Kreuzung kr1;
+	Fahrzeug::vKopf();
+	string data;
+	myfile.exceptions(ios_base::eofbit | ios_base::failbit|ios_base::badbit);
+	try
+	{
+		myfile >> p1;
+		cout << p1 << endl;
+		myfile >> f2;
+		cout << f2 << endl;
+		myfile >> kr1;
+		cout << kr1 << endl;
 
-	bZeichneStrasse("weg1", sWegname, 500, 2, koordinaten);
-
-	for (dGlobaleZeit = 0; dGlobaleZeit < 5; dGlobaleZeit += 0.25){
-
-		string s1 = "wegtest";
-		const char* sWegname = s1.c_str();
-		string s2 = "PKWtest";
-		const char* fname = s2.c_str();
-		double realPosition = dGlobaleZeit / 5;
-		double dGeschwind = 100;
-		double p_dTankinhalt = 100;
-		bZeichnePKW(s2, sWegname, realPosition, dGeschwind, p_dTankinhalt);
-
-		vSleep(800);
 	}
-	s1 = "weg4";
-	sWegname = s1.c_str();
-	int koordinaten2[4] = { 100, 100, 200, 250 };
-	bZeichneStrasse("weg3", sWegname, 500, 2, koordinaten2);
+	catch (exception& error)
+	{
+		cout << error.what() << endl;
+	}
+}
 
-	vBeendeGrafik();
+void vAufgabe_9() 
+{
+	cout << "Aufgabe 9:" << endl;
+	Simulation simu;
+	ifstream myfile("SimuKopie.dat");
+	try
+	{
+		simu.vEinlesen(myfile);
+	}
+	catch(exception& error)
+	{
+		cout << error.what() << endl;
+	}
+
+	simu.vSimulieren(3, 0.1);
+
+}
+
+void vAufgabe_9a()
+{
+	cout << "Aufgabe_9a:" << endl;
+	Simulation simu;
+	ifstream myfile("SimuDisplay.dat");
+	try
+	{
+		simu.vEinlesen(myfile,true);
+	}
+	catch (exception & error)
+	{
+		cout << error.what() << endl;
+	}
+	simu.vSimulieren(10, 0.1);
+}
+
+void test(){
+	//unique_ptr < Fahrzeug > f1 = make_unique<PKW>("F1", 100);
+	//unique_ptr < Fahrzeug > f2 = move(f1);
+	Kreuzung kr1("kr1", 100);
+	Fahrzeug f1("s1");
+	PKW p1("p1", 100, 10, 100);
+	kr1.vTanken(p1);
 }
 
 int main(){
@@ -418,7 +487,10 @@ int main(){
 	//vAufgabe_5();
 	//vAufgabe_6();
 	//vAufgabe_6a();
-	vAufgabe_7();
-//	test();
+	//vAufgabe_7();
+	//vAufgabe_8();
+	//vAufgabe_9();
+	vAufgabe_9a();
+	//test();
 	return 0;
 }

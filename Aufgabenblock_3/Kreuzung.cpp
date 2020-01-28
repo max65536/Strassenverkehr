@@ -1,6 +1,8 @@
 #include "Kreuzung.h"
 #include "Fahrzeug.h"
 
+Kreuzung::Kreuzung() {}
+
 Kreuzung::Kreuzung(string sName, double dTankstelle) :
 	p_dTankstelle(dTankstelle),
 	Simulationsobject(sName)
@@ -11,7 +13,7 @@ void Kreuzung::vTanken(Fahrzeug& fahrzeug)
 {
 	if (p_dTankstelle > 0) 
 	{
-		p_dTankstelle -= fahrzeug.dTanken(-1);
+		p_dTankstelle -= fahrzeug.dTanken(0);
 	}
 }
 
@@ -56,11 +58,18 @@ Weg& Kreuzung::pZufaelligerWeg(Weg& weg)
 	{
 		it++;
 	}
-	if ((*it)->getName() == (ruckweg.getName())) 
+	//if ((*it)->getName() == (ruckweg.getName())) 
+	if	((*it).get() == &ruckweg)
 	{
-		return pZufaelligerWeg(ruckweg);
+		return pZufaelligerWeg(weg);
 	}
 	return *(*it);
+}
+
+istream& Kreuzung::vEinlesen(istream& is) 
+{
+	Simulationsobject::vEinlesen(is) >> p_dTankstelle;
+	return is;
 }
 
 Kreuzung::~Kreuzung() 

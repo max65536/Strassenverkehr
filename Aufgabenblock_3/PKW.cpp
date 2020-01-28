@@ -64,6 +64,7 @@ void PKW::vAusgeben(){
 	sprintf_s(buf, "%.2f/%.2f", p_dTankinhalt,p_dTankvolumen);
 	cout << setw(20) << buf;
 }
+
 ostream& PKW::vAusgeben(ostream& os){
 	Fahrzeug::vAusgeben(os);
 	char buf[20];
@@ -72,6 +73,7 @@ ostream& PKW::vAusgeben(ostream& os){
 	return os;
 }
 
+
 void PKW::vZeichnen(const Weg &weg)const{
 	double dGeschwind = dGeschwindigkeit();
 	double dLaenge = weg.getLaenge();
@@ -79,6 +81,13 @@ void PKW::vZeichnen(const Weg &weg)const{
 	string tmp = weg.getName();
 	const char *sWegname = tmp.c_str();
 	bZeichnePKW(p_sName, sWegname, realPosition, dGeschwind, p_dTankinhalt);
+}
+
+istream& PKW::vEinlesen(istream& is) 
+{
+	Fahrzeug::vEinlesen(is) >> p_dVerbrauch >>p_dTankvolumen;
+	p_dTankinhalt = p_dTankvolumen; 
+	return is;
 }
 
 PKW::~PKW()

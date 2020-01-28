@@ -4,7 +4,7 @@
 
 //
 Fahrzeug::Fahrzeug(){
-		
+	
 	}
 
 	//Instalisierungsliste
@@ -56,16 +56,19 @@ void Fahrzeug::vKopf(){
 
 void Fahrzeug::vSimulieren(){
 	double dZeitraum = fabs(dGlobaleZeit - p_dZeit);
-
+	if (dZeitraum < 0.0001) 
+	{
+		return;
+	}
 	//if (typeid(*p_pVerhalten)==typeid(Parken)){
 	//	return;
 	//}
-
+	p_dZeit = dGlobaleZeit;
 	double dGeradeGefahreneStrecke = p_pVerhalten->dStrecke(*this, dZeitraum);
 	p_dGesamtStrecke += dGeradeGefahreneStrecke;   //dGeschwindigkeit() * (dGlobaleZeit - p_dZeit);
 	p_dAbschnittStrecke += dGeradeGefahreneStrecke;
 	p_dGesamtZeit += dZeitraum;
-	p_dZeit = dGlobaleZeit;
+	//p_dZeit = dGlobaleZeit;
 
 }
 
@@ -93,10 +96,16 @@ double Fahrzeug::getAbschnittStrecke(){
 
 
 ostream& Fahrzeug::vAusgeben(ostream& os){
-	Simulationsobject::vAusgeben(os) << setw(20) << this->p_dMaxGeschwindigkeit
-		<< setw(20) << this->p_dGesamtStrecke
-		<< setw(25) << this->dGeschwindigkeit();
+	Simulationsobject::vAusgeben(os) << setw(20) << p_dMaxGeschwindigkeit
+		<< setw(20) << p_dAbschnittStrecke
+		<< setw(20) << p_dGesamtStrecke
+		<< setw(25) << dGeschwindigkeit();
 	return os;
+}
+
+istream& Fahrzeug::vEinlesen(istream& is) {
+	Simulationsobject::vEinlesen(is) >> p_dMaxGeschwindigkeit;
+	return is;
 }
 
 ostream& operator<<(ostream& os, Fahrzeug& fahrzeug){

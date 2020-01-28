@@ -54,9 +54,12 @@ public:
 
 	bool operator <(const Fahrzeug& fahrzeug);
 	Fahrzeug& operator =(const Fahrzeug& fahrzeug);
-
+	
+	void setAbschnittStrecke(double dAbschnittStrecke) { p_dAbschnittStrecke = dAbschnittStrecke; };
 
 	void test();
+
+	virtual istream& vEinlesen(istream&) override;
 
 	virtual ~Fahrzeug();
 };

@@ -47,6 +47,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -73,6 +74,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parken.cpp" />
     <ClCompile Include="PKW.cpp" />
+    <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="Simulationsobject.cpp" />
     <ClCompile Include="Streckenende.cpp" />
     <ClCompile Include="Testclass.cpp" />
@@ -89,6 +91,7 @@
     <ClInclude Include="Parken.h" />
     <ClInclude Include="PKW.h" />
     <ClInclude Include="SimuClient.h" />
+    <ClInclude Include="Simulation.h" />
     <ClInclude Include="Simulationsobject.h" />
     <ClInclude Include="Streckenende.h" />
     <ClInclude Include="Testclass.h" />
@@ -100,6 +103,7 @@
   <ItemGroup>
     <None Include="SimuClient.dll" />
     <None Include="SimuServer.jar" />
+    <None Include="VO.dat" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="SimuClient.lib" />

@@ -25,6 +25,8 @@ public:
 	virtual int check_type(){ return 1; };
 	virtual ostream& vAusgeben(ostream& os) override;
 
+	virtual istream& vEinlesen(istream& is) override;
+
 	virtual ~PKW();
 
 
